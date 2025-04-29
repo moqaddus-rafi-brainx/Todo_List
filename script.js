@@ -52,23 +52,44 @@ function completedTask(taskCheck) {
 }
 
 //Update the task
+
+let activeUpdateInput = null;
+
 function updateTask(task) {
     //Enabling the Update Input Element
     parentLi = task.parentElement.parentElement;
     parentDiv = parentLi.querySelector('.task-left');
     updateInput = parentDiv.querySelector('.update-input');
     updateSpan = parentDiv.querySelector('.task-text');
+
+    //If any input is already active, we blur it first,saving it.
+    if (activeUpdateInput && activeUpdateInput !== updateInput) {
+        activeUpdateInput.blur(); 
+    }
+
     updateInput.classList.remove('hide');
     updateInput.value = updateSpan.innerText;
     updateSpan.classList.add('hide');
+    updateInput.focus();
+
+    //Update global variable
+    activeUpdateInput = updateInput;
 
 
-    //Save changes after Enter pressed
+    //Save changes after Enter pressed(blur event triggered)
     updateInput.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
-            saveUpdatedTask(updateInput, updateSpan);
+            updateInput.blur();
         }
     });
+
+    //Blur listener
+    updateInput.onblur = function() {
+        saveUpdatedTask(updateInput, updateSpan);
+        activeUpdateInput = null;
+    };
+
+
 }
 
 //Changes saved in span element
