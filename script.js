@@ -37,7 +37,6 @@ function addTask() {
 
 //Marks and unmarks task as completed on checkbox click
 function completedTask(taskCheck) {
-    console.log("Inside");
     let parentDiv = taskCheck.parentElement;
     let taskSpan = parentDiv.querySelector('.task-text');
     if (taskSpan.classList.contains('completed')) {
